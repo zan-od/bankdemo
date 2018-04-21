@@ -10,6 +10,32 @@
 <div class="container-fluid body">
     <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content justify-content-center">
         <h2>Bank transactions</h2>
+        <form th:action="@{/transactions/filter}" method="get">
+            <div class="input-group mb-3">
+                <label for="bdate">From:</label>
+                <input type="date" id="bdate" name="bdate" th:value="${#dates.format(bdate, 'yyyy-MM-dd')}"
+                       max="3000-12-31" min="2000-01-01" class="form-control">
+                <label for="edate">till</label>
+                <input type="date" id="edate" name="edate" th:value="${#dates.format(edate, 'yyyy-MM-dd')}"
+                       max="3000-12-31" min="2000-01-01" class="form-control">
+                <label for="client_id">Client</label>
+                <select id="client_id" th:value="${client_id}" name="client_id" class="custom-select">
+                    <option value="0" th:selected="${client_id==0}">All clients</option>
+                    <th:block th:each="client: ${clients}">
+                        <option th:value="${client.id}" th:selected="${client_id==client.id}"
+                                th:text="${client.name}">
+                            Client
+                        </option>
+                    </th:block>
+                </select>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Filter</button>
+                </div>
+            </div>
+            <div class="alert alert-danger my-1" role="alert" th:if="${filterError} != null"
+                 th:text="${filterError}">Filter error
+            </div>
+        </form>
         <table class="table table-sm table-hover">
             <thead>
             <tr>
@@ -25,8 +51,12 @@
                 <tr>
                     <td th:text="${transaction.id}">Id</td>
                     <td th:text="${transaction.date}">Date</td>
-                    <td th:text="${transaction.sender?.number}">Sender</td>
-                    <td th:text="${transaction.recipient?.number}">Recipient</td>
+                    <td th:text="${transaction.sender == null ? '' : transaction.sender.number+' ('+transaction.sender.owner.name+')'}">
+                        Sender
+                    </td>
+                    <td th:text="${transaction.recipient == null ? '' : transaction.recipient.number+' ('+transaction.recipient.owner.name+')'}">
+                        Recipient
+                    </td>
                     <td th:text="${transaction.amount}">Amount</td>
                 </tr>
             </th:block>

@@ -39,4 +39,16 @@ public class BankTransactionServiceImpl implements BankTransactionService {
     public List<BankTransaction> listTransactions() {
         return bankTransactionDAO.findAll();
     }
+
+    @Override
+    public List<BankTransaction> findTransactions(Date bDate, Date eDate, Long clientId) {
+        List<BankTransaction> transactions;
+        if (clientId > 0) {
+            transactions = bankTransactionDAO.findByDateBetweenAndClient(bDate, eDate, clientId);
+        } else {
+            transactions = bankTransactionDAO.findByDateBetween(bDate, eDate);
+        }
+
+        return transactions;
+    }
 }
