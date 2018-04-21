@@ -14,6 +14,8 @@
             <thead>
             <tr>
                 <td>Name</td>
+                <td>Address</td>
+                <td>Age</td>
                 <td>Total amount</td>
             </tr>
             </thead>
@@ -24,6 +26,8 @@
                         <a th:href="@{/client/{clientId}/accounts(clientId=${client.id})}" th:text="${client.name}">Client
                             name</a>
                     </td>
+                    <td th:text="${client.address}">Amount</td>
+                    <td th:text="${client.age}">Amount</td>
                     <td th:text="${clientAmounts.get(client)}">Amount</td>
                 </tr>
             </th:block>
@@ -38,6 +42,19 @@
                     <form th:action="@{/client/add}" th:object="${new_client}" method="post">
                         <div class="form-group">
                             <input type="text" th:field="*{name}" class="form-control" placeholder="Client name"/>
+                            <div class="alert alert-danger my-1" role="alert" th:if="${error} != null"
+                                 th:text="${error}">Client name error
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea th:field="*{address}" class="form-control"
+                                      placeholder="Client address"></textarea>
+                            <div class="alert alert-danger my-1" role="alert" th:if="${error} != null"
+                                 th:text="${error}">Client address error
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" th:field="*{age}" class="form-control" placeholder="Client age"/>
                             <div class="alert alert-danger my-1" role="alert" th:if="${error} != null"
                                  th:text="${error}">Client name error
                             </div>

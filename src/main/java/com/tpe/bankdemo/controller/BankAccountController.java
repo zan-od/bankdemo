@@ -18,7 +18,7 @@ import java.util.List;
 public class BankAccountController {
 
     private BankAccountService bankAccountService;
-    ClientService clientService;
+    private ClientService clientService;
 
     @Autowired
     public void setBankAccountService(BankAccountService bankAccountService) {

@@ -1,6 +1,7 @@
 package com.tpe.bankdemo.service;
 
 import com.tpe.bankdemo.dao.ClientDAO;
+import com.tpe.bankdemo.model.BankAccount;
 import com.tpe.bankdemo.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,17 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    final ClientDAO clientDAO;
+    private ClientDAO clientDAO;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    public ClientServiceImpl(ClientDAO clientDAO) {
+    public void setClientDAO(ClientDAO clientDAO) {
         this.clientDAO = clientDAO;
+    }
+
+    @Autowired
+    public void setBankAccountService(BankAccountService bankAccountService) {
+        this.bankAccountService = bankAccountService;
     }
 
     @Override
@@ -34,6 +41,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public double getClientTotalAmount(Client client) {
-        return -1.0;
+        double sum = 0;
+        for (BankAccount account : bankAccountService.listClientAccounts(client)) {
+            sum = sum + account.getAmount();
+        }
+
+        return sum;
     }
 }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: head('Add a new transaction')">
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<header th:replace="header :: menu">
+    Navigation bar
+</header>
+<div class="container-fluid body">
+    <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content justify-content-center">
+        <div class="container standard-page-container">
+            <div class="row justify-content-md-center">
+                <div class="col-6">
+                    <h2>Add a new transaction</h2>
+                    <form th:action="@{/transaction/add}"
+                          th:object="${new_transaction}" method="post">
+
+                        <table>
+                            <tr>
+                                <td>
+                                    <label>Sender account</label>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <select class="custom-select" th:field="*{sender}">
+                                                <option value="0" selected>Choose account ...</option>
+                                                <th:block th:each="account: ${accounts}">
+                                                    <option th:value="${account.id}"
+                                                            th:text="|${account.number} (${account.owner.name})|">
+                                                        Account
+                                                    </option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Recipient account</label>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <select class="custom-select" th:field="*{recipient}">
+                                                <option value="0" selected>Choose account ...</option>
+                                                <th:block th:each="account: ${accounts}">
+                                                    <option th:value="${account.id}"
+                                                            th:text="|${account.number} (${account.owner.name})|">
+                                                        Account
+                                                    </option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Amount</label>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" th:field="*{amount}" class="form-control"
+                                               placeholder="Amount"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                        <div class="alert alert-danger my-1" role="alert" th:if="${error} != null"
+                             th:text="${error}">Account number error
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -11,16 +11,21 @@ import java.util.List;
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
 
-    final BankAccountDAO bankAccountDAO;
+    private BankAccountDAO bankAccountDAO;
 
     @Autowired
-    public BankAccountServiceImpl(BankAccountDAO bankAccountDAO) {
+    public void setBankAccountDAO(BankAccountDAO bankAccountDAO) {
         this.bankAccountDAO = bankAccountDAO;
     }
 
     @Override
     public void saveAccount(BankAccount account) {
         bankAccountDAO.save(account);
+    }
+
+    @Override
+    public List<BankAccount> listAllAccounts() {
+        return bankAccountDAO.findAll();
     }
 
     @Override
@@ -31,5 +36,24 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public double getCurrentAmount(BankAccount account) {
         return account.getAmount();
+    }
+
+    @Override
+    public void addAmount(BankAccount account, double amount) {
+        if (amount == 0) {
+            return;
+        }
+        if (account == null) {
+            return;
+        }
+
+        double currentAmount = account.getAmount();
+        double newAmount = currentAmount + amount;
+        if (newAmount < 0) {
+            //throw new Exception();
+        }
+
+        account.setAmount(newAmount);
+        bankAccountDAO.save(account);
     }
 }
