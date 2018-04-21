@@ -14,20 +14,20 @@ public class BankTransaction {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private Date date;
 
-    @ManyToOne(optional = true, cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name="sender_id")
     @Nullable
     private BankAccount sender;
 
-    @ManyToOne(optional = true, cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name="recipient_id")
     @Nullable
     private BankAccount recipient;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private double amount;
 
     public long getId() {

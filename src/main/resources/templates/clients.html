@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: head('Clients')">
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<header th:replace="header :: menu">
+    Navigation bar
+</header>
+<div class="container-fluid body">
+    <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content justify-content-center">
+        <h2>Clients</h2>
+        <table class="table table-sm table-hover">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Total amount</td>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="client: ${clients}">
+                <tr>
+                    <td>
+                        <a th:href="@{/client/{clientId}/accounts(clientId=${client.id})}" th:text="${client.name}">Client
+                            name</a>
+                    </td>
+                    <td th:text="${clientAmounts.get(client)}">Amount</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
+
+        <div class="container standard-page-container">
+            <div class="row justify-content-md-left">
+                <div class="col-6">
+                    <h2>Add new client</h2>
+                    <form th:action="@{/client/add}" th:object="${new_client}" method="post">
+                        <div class="form-group">
+                            <input type="text" th:field="*{name}" class="form-control" placeholder="Client name"/>
+                            <div class="alert alert-danger my-1" role="alert" th:if="${error} != null"
+                                 th:text="${error}">Client name error
+                            </div>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

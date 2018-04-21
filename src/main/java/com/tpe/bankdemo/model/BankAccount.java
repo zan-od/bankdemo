@@ -11,11 +11,14 @@ public class BankAccount {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne(optional = true, cascade = CascadeType.DETACH)
-    @JoinColumn(name="owner_id")
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "owner_id", nullable = false)
     private Client owner;
 
-    @Column(name = "amount")
+    @Column(name = "number", nullable = false)
+    private String number;
+
+    @Column(name = "amount", nullable = false)
     private double amount;
 
     public long getId() {
@@ -40,5 +43,13 @@ public class BankAccount {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: head('Bank Accounts')">
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<header th:replace="header :: menu">
+    Navigation bar
+</header>
+<div class="container-fluid body">
+    <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content justify-content-center">
+        <h2 th:text="Accounts">Accounts</h2>
+        <table class="table table-sm table-hover">
+            <thead>
+            <tr>
+                <td>Client</td>
+                <td>Number</td>
+                <td>Amount</td>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="account: ${accounts}">
+                <tr>
+                    <td th:text="${account.owner.name}">Client</td>
+                    <td>
+                        <a th:href="@{/account/{accountId}/transactions(accountId=${account.id})}"
+                           th:text="${account.number}">Account number</a>
+                    </td>
+                    <td th:text="${account.amount}">Amount</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
+
+        <div class="container standard-page-container">
+            <div class="row justify-content-md-left">
+                <div class="col-6">
+                    <h2>Add new account</h2>
+                    <form th:action="@{/client/{clientId}/account/add(clientId=${client.id})}"
+                          th:object="${new_account}" method="post">
+                        <div class="form-group">
+                            <input type="text" th:field="*{number}" class="form-control" placeholder="Account number"/>
+                            <div class="alert alert-danger my-1" role="alert" th:if="${error} != null"
+                                 th:text="${error}">Account number error
+                            </div>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
