@@ -15,17 +15,17 @@ public class BankTransactionServiceImpl implements BankTransactionService {
     private BankAccountService bankAccountService;
 
     @Autowired
-    public void getBankTransactionDAO(BankTransactionDAO bankTransactionDAO) {
+    public void setBankTransactionDAO(BankTransactionDAO bankTransactionDAO) {
         this.bankTransactionDAO = bankTransactionDAO;
     }
 
     @Autowired
-    public void getBankAccountService(BankAccountService bankAccountService) {
+    public void setBankAccountService(BankAccountService bankAccountService) {
         this.bankAccountService = bankAccountService;
     }
 
     @Override
-    public void addTransaction(BankTransaction transaction) {
+    public void addTransaction(BankTransaction transaction) throws IllegalStateException {
 
         transaction.setDate(new Date());
 
@@ -41,7 +41,11 @@ public class BankTransactionServiceImpl implements BankTransactionService {
     }
 
     @Override
-    public List<BankTransaction> findTransactions(Date bDate, Date eDate, Long clientId) {
+    public List<BankTransaction> findTransactions(Date bDate, Date eDate, Long clientId) throws IllegalArgumentException {
+        if (bDate == null) throw new IllegalArgumentException("Date from mustn't be null!");
+        if (eDate == null) throw new IllegalArgumentException("Date till mustn't be null!");
+        if (clientId == null) throw new IllegalArgumentException("Client ID mustn't be null!");
+
         List<BankTransaction> transactions;
         if (clientId > 0) {
             transactions = bankTransactionDAO.findByDateBetweenAndClient(bDate, eDate, clientId);

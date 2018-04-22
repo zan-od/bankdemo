@@ -50,7 +50,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         double currentAmount = account.getAmount();
         double newAmount = currentAmount + amount;
         if (newAmount < 0) {
-            //throw new Exception();
+            throw new IllegalStateException("Not enough money on account " + account + ": needed " + amount + ", available " + currentAmount);
         }
 
         account.setAmount(newAmount);
