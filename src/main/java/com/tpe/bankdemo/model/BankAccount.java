@@ -54,6 +54,6 @@ public class BankAccount {
     }
 
     public String toString() {
-        return number + " (" + owner.getName() + ")";
+        return number + (owner == null ? "" : " (" + owner.getName() + ")");
     }
 }
