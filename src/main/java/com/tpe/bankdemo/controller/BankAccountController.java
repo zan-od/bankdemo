@@ -79,7 +79,12 @@ public class BankAccountController {
         Map<BankTransaction, Double> amountsAfter = new HashMap<>();
         double currentAmount = 0;
         for (BankTransaction transaction : transactions) {
-            currentAmount += transaction.getAmount();
+            if ((transaction.getSender() != null) && (transaction.getSender().equals(account))) {
+                currentAmount -= transaction.getAmount();
+            }
+            if ((transaction.getRecipient() != null) && (transaction.getRecipient().equals(account))) {
+                currentAmount += transaction.getAmount();
+            }
             amountsAfter.put(transaction, currentAmount);
         }
 

@@ -51,11 +51,17 @@
                 <tr>
                     <td th:text="${transaction.id}">Id</td>
                     <td th:text="${transaction.date}">Date</td>
-                    <td th:text="${transaction.sender == null ? '' : transaction.sender.number+' ('+transaction.sender.owner.name+')'}">
-                        Sender
+                    <td>
+                        <a th:if="${transaction.sender!=null}"
+                           th:href="@{/account/{accountId}/transactions(accountId=${transaction.sender.id})}"
+                           th:text="${transaction.sender}">
+                            Sender</a>
                     </td>
-                    <td th:text="${transaction.recipient == null ? '' : transaction.recipient.number+' ('+transaction.recipient.owner.name+')'}">
-                        Recipient
+                    <td>
+                        <a th:if="${transaction.recipient!=null}"
+                           th:href="@{/account/{accountId}/transactions(accountId=${transaction.recipient.id})}"
+                           th:text="${transaction.recipient}">
+                            Recipient</a>
                     </td>
                     <td th:text="${transaction.amount}">Amount</td>
                 </tr>

@@ -4,14 +4,17 @@ import com.tpe.bankdemo.model.BankTransaction;
 import com.tpe.bankdemo.service.BankAccountService;
 import com.tpe.bankdemo.service.BankTransactionService;
 import com.tpe.bankdemo.service.ClientService;
+import com.tpe.bankdemo.validator.BankTransactionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ public class BankTransactionController {
     private BankTransactionService bankTransactionService;
     private BankAccountService bankAccountService;
     private ClientService clientService;
+    private BankTransactionValidator bankTransactionValidator;
 
     @Autowired
     public void setBankTransactionService(BankTransactionService bankTransactionService) {
@@ -39,6 +43,11 @@ public class BankTransactionController {
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    @Autowired
+    public void setBankTransactionValidator(BankTransactionValidator bankTransactionValidator) {
+        this.bankTransactionValidator = bankTransactionValidator;
     }
 
     @GetMapping("/transactions")
@@ -108,26 +117,30 @@ public class BankTransactionController {
     @GetMapping("/transaction/add")
     public String addTransaction(Model model) {
 
-        fillAddTransactionModel(model, null);
+        fillAddTransactionModel(model, new BankTransaction(), null);
 
         return "add_transaction";
     }
 
-    private void fillAddTransactionModel(Model model, String error) {
+    private void fillAddTransactionModel(Model model, BankTransaction transaction, String error) {
         model.addAttribute("error", error);
-        model.addAttribute("new_transaction", new BankTransaction());
+        model.addAttribute("new_transaction", transaction);
         model.addAttribute("accounts", bankAccountService.listAllAccounts());
     }
 
     @PostMapping("/transaction/add")
-    public String addTransaction(Model model, @ModelAttribute("new_transaction") BankTransaction transaction) {
+    public String addTransaction(Model model, @Valid @ModelAttribute("new_transaction") BankTransaction transaction, BindingResult bindingResult) {
+
+        bankTransactionValidator.validate(transaction, bindingResult);
+        if (bindingResult.hasErrors()) {
+            fillAddTransactionModel(model, transaction, null);
+            return "add_transaction";
+        }
 
         try {
             bankTransactionService.addTransaction(transaction);
         } catch (IllegalStateException e) {
-
-            fillAddTransactionModel(model, e.getLocalizedMessage());
-
+            fillAddTransactionModel(model, transaction, e.getLocalizedMessage());
             return "add_transaction";
         }
 

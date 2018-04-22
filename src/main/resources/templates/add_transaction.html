@@ -68,11 +68,22 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="alert alert-danger my-1" role="alert"
+                                         th:if="${#fields.hasErrors('amount')}"
+                                         th:errors="*{amount}">Transaction amount error
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
 
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                        <div class="alert alert-danger my-1" role="alert" th:if="${#fields.hasErrors('sender')}"
+                             th:errors="*{sender}">Transaction validation error
+                        </div>
                         <div class="alert alert-danger my-1" role="alert" th:if="${error} != null"
-                             th:text="${error}">Transaction error
+                             th:text="${error}">Transaction performing error
                         </div>
                     </form>
                 </div>
