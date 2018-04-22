@@ -108,17 +108,28 @@ public class BankTransactionController {
     @GetMapping("/transaction/add")
     public String addTransaction(Model model) {
 
-        model.addAttribute("error", null);
-        model.addAttribute("new_transaction", new BankTransaction());
-        model.addAttribute("accounts", bankAccountService.listAllAccounts());
+        fillAddTransactionModel(model, null);
 
         return "add_transaction";
     }
 
-    @PostMapping("/transaction/add")
-    public String addTransaction(@ModelAttribute("new_transaction") BankTransaction transaction) {
+    private void fillAddTransactionModel(Model model, String error) {
+        model.addAttribute("error", error);
+        model.addAttribute("new_transaction", new BankTransaction());
+        model.addAttribute("accounts", bankAccountService.listAllAccounts());
+    }
 
-        bankTransactionService.addTransaction(transaction);
+    @PostMapping("/transaction/add")
+    public String addTransaction(Model model, @ModelAttribute("new_transaction") BankTransaction transaction) {
+
+        try {
+            bankTransactionService.addTransaction(transaction);
+        } catch (IllegalStateException e) {
+
+            fillAddTransactionModel(model, e.getLocalizedMessage());
+
+            return "add_transaction";
+        }
 
         return "redirect:/transactions";
     }

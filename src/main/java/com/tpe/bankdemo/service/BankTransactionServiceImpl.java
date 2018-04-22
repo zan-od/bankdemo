@@ -1,6 +1,7 @@
 package com.tpe.bankdemo.service;
 
 import com.tpe.bankdemo.dao.BankTransactionDAO;
+import com.tpe.bankdemo.model.BankAccount;
 import com.tpe.bankdemo.model.BankTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,11 @@ public class BankTransactionServiceImpl implements BankTransactionService {
     @Override
     public List<BankTransaction> listTransactions() {
         return bankTransactionDAO.findAll();
+    }
+
+    @Override
+    public List<BankTransaction> listAccountTransactions(BankAccount account) {
+        return bankTransactionDAO.findBySenderOrRecipientOrderByDate(account, account);
     }
 
     @Override

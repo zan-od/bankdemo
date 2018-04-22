@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: head('Account\'s transactions')">
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<header th:replace="header :: menu">
+    Navigation bar
+</header>
+<div class="container-fluid body">
+    <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content justify-content-center">
+        <h2>Account's transactions</h2>
+        <table class="table table-sm table-hover">
+            <thead>
+            <tr>
+                <td>Id</td>
+                <td>Date</td>
+                <td>Sender</td>
+                <td>Recipient</td>
+                <td>Amount</td>
+                <td>Account amount</td>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="transaction: ${transactions}">
+                <tr>
+                    <td th:text="${transaction.id}">Id</td>
+                    <td th:text="${transaction.date}">Date</td>
+                    <td th:text="${transaction.sender}">
+                        Sender
+                    </td>
+                    <td th:text="${transaction.recipient}">
+                        Recipient
+                    </td>
+                    <td class="text-right" th:text="${transaction.amount}">Amount</td>
+                    <td class="text-right" th:text="${amountsAfter.get(transaction)}">Account amount</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

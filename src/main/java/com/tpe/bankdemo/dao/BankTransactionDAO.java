@@ -1,5 +1,6 @@
 package com.tpe.bankdemo.dao;
 
+import com.tpe.bankdemo.model.BankAccount;
 import com.tpe.bankdemo.model.BankTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,6 @@ public interface BankTransactionDAO extends JpaRepository<BankTransaction, Long>
     List<BankTransaction> findByDateBetweenAndClient(@Param("bDate") Date bDate, @Param("eDate") Date eDate, @Param("client_id") Long clientId);
 
     List<BankTransaction> findByDateBetween(Date bDate, Date eDate);
+
+    List<BankTransaction> findBySenderOrRecipientOrderByDate(BankAccount sender, BankAccount recipient);
 }

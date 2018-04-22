@@ -26,9 +26,9 @@
                         <a th:href="@{/client/{clientId}/accounts(clientId=${client.id})}" th:text="${client.name}">Client
                             name</a>
                     </td>
-                    <td th:text="${client.address}">Amount</td>
-                    <td th:text="${client.age}">Amount</td>
-                    <td th:text="${clientAmounts.get(client)}">Amount</td>
+                    <td th:text="${client.address}">Address</td>
+                    <td th:text="${client.age}">Age</td>
+                    <td class="text-right" th:text="${clientAmounts.get(client)}">Amount</td>
                 </tr>
             </th:block>
             </tbody>

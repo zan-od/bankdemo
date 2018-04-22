@@ -15,4 +15,6 @@ public interface BankAccountService {
     double getCurrentAmount(BankAccount account);
 
     void addAmount(BankAccount account, double amount);
+
+    BankAccount getAccount(long id);
 }
