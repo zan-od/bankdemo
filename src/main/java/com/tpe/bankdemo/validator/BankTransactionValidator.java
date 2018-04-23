@@ -17,7 +17,12 @@ public class BankTransactionValidator implements Validator {
     public void validate(Object object, Errors errors) {
         BankTransaction transaction = (BankTransaction) object;
 
-        //ValidationUtils.rejectIfEmptyOrWhitespace(errors, "amount", "field.Required");
+        if (transaction.getAmount() <= 0) {
+            // if no parsing error
+            if (!errors.hasFieldErrors("amount")) {
+                errors.rejectValue("amount", "field.PositiveNumber");
+            }
+        }
 
         if ((transaction.getSender() == null) & (transaction.getRecipient() == null)) {
             errors.rejectValue("sender", "transaction.EmptySenderAndRecipient");
